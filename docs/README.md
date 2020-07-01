@@ -1,7 +1,7 @@
 ---
 home: true
-heroImage: https://v1.vuepress.vuejs.org/hero.png
-tagline: hogehoge 
+heroImage: /images/leccafe.png
+tagline: Nuxt.js を利用した Web サイト / Web アプリ開発のための教材を作成しています。 
 actionText: Quick Start →
 actionLink: /lessons/website/
 features:

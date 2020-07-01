@@ -5,11 +5,11 @@ module.exports = {
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#title
    */
-  title: 'Nuxt.js Tips',
+  title: 'Nuxt.js Note',
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#description
    */
-  description: "Nuxt.js を利用した Web サイト / Web アプリ開発のための Tips 集です。",
+  description: "Nuxt.js を利用した Web サイト / Web アプリ開発のための教材を作成しています。",
 
   /**
    * Extra tags to be injected to the page HTML `<head>`
@@ -28,31 +28,20 @@ module.exports = {
    * ref：https://v1.vuepress.vuejs.org/theme/default-theme-config.html
    */
   themeConfig: {
-    repo: 'lec-cafe/nuxtjs-tips',
+    repo: 'lec-cafe/books-nuxtjs',
     editLinks: true,
-    docsDir: '/docs',
+    docsDir: 'docs',
     editLinkText: 'ページに不明点や誤字等があれば、Github にて修正を提案してください！',
-    lastUpdated: true,
+    lastUpdated: false,
     nav: [
-
-      {
-        text: 'Guide',
-        link: '/guide/',
-      },
-      {
-        text: 'Config',
-        link: '/config/'
-      },
-      {
-        text: 'VuePress',
-        link: 'https://v1.vuepress.vuejs.org'
-      }
+      {text: 'Lec Café', link: 'https://leccafe.connpass.com/'},
     ],
     sidebar: {
       "/lessons/": [
         {
           title: 'Nuxt.js を利用したWebサイト制作',
           collapsable: false,
+          path: "/lessons/website",
           children: [
             'website/1.setup',
             'website/2.page',
@@ -74,7 +63,7 @@ module.exports = {
             'scss',
             'ssr',
             'lint',
-            'setup',
+            // 'setup.draft',
           ]
         }
       ],
