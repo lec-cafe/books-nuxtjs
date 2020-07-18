@@ -1,26 +1,29 @@
 <template>
-  <div class="container">
-    <Nuxt />
+  <div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+      <div class="container">
+        <a class="navbar-brand" href="/">Task List</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <Nuxt />
+    </div>
   </div>
 </template>
 
 <style>
 
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-}
+/**,*/
+/**::before,*/
+/**::after {*/
+/*  box-sizing: border-box;*/
+/*  margin: 0;*/
+/*}*/
 
 .container {
   margin: 0 auto;
-  min-height: 100vh;
   max-width: 480px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
 }
 </style>

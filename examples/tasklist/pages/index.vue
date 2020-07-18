@@ -1,13 +1,11 @@
 <template>
   <div>
-    <ul class="list-group-flush">
-      <li class="list-group-item">task一覧</li>
-      <li class="list-group-item" v-for="(task, index) in tasks">{{ task.name }}</li>
-      <li class="list-group-item">
-        <router-link to="/form">
-          投稿画面
-        </router-link>
-      </li>
+    <router-link class="btn btn-light" to="/form">
+      投稿画面
+    </router-link>
+    <br><br>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item" v-for="task in tasks">{{ task.name }}</li>
     </ul>
   </div>
 </template>
