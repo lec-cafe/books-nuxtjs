@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <form>
       <div class="form-group">
         <label>タスク</label>
