@@ -13,15 +13,6 @@
 </template>
 
 <style>
-
-
-/**,*/
-/**::before,*/
-/**::after {*/
-/*  box-sizing: border-box;*/
-/*  margin: 0;*/
-/*}*/
-
 .container {
   margin: 0 auto;
   max-width: 480px;
