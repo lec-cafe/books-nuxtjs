@@ -107,4 +107,5 @@ Vue.component('slot-test', {
 slotに名前が設定されていない時のデフォルトの名前がdefaultになるということです。
 
 - 実行結果  
+
 ![scope_slotResult](./scope_slotResult.png)
