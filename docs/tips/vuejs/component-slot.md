@@ -10,7 +10,18 @@ slotとは親となるコンポーネント側から、子のコンポーネン�
 ### デフォルトスロット
 template内で、slotというタグを使うことで、リアクティブデータを、コンポーネントのテンプレートの中に差し込んでいます。
   
-![default_slot](./default_slot.png)
+```vue
+<div>
+  <slot-test>ここに値を入れれます。  EX) 田中 </slot-test>
+</div>
+```
+```vue
+<script>
+Vue.component('slot-test', {
+     template: '<div>こんにちは、<slot>xxx</slot>さん！</div>'
+ });
+</script>
+```
 
 「<slot-test>田中</slot-test>」としている「田中」の部分は「デフォルトスロット」といい、コンポーネント側の`<slot><slot>`の位置に自動で出力されます。
 - 実行結果
@@ -22,7 +33,24 @@ template内で、slotというタグを使うことで、リアクティブデ�
 Vue 2.6.0以降は、コンポーネント側では、`<slot name = "XXX">`で名前付きslotを定義します。    
 また、v-bind を 「:」、v-onを「@」で省略できるように、v-slotも「#」で省略して記述することができます。
 
-![named_slot](named_slot.png)
+```vue
+<div id="app">
+    <slot-test>
+      <span slot="login">田中</span>
+      <span #footer>今日の天気は曇りです。</span>
+    </slot-test>
+</div>
+```
+```vue
+<script >
+Vue.component('slot-test', {
+    template: '<div>'+
+              '<div>こんにちは、<slot name="login">xxx</slot>さん！</div>'+
+              '<footer><slot name="footer"></slot></footer>'+
+              '</div>'
+});
+</script>
+```
 
 呼び出し元には、「slot=”呼び出すスロット名”」、呼び出し先には「name=”スロット名”」という形で定義をすることで、それぞれ色んな場所に埋め込むことが可能です。
 - 実行結果  
@@ -33,11 +61,47 @@ Vue 2.6.0以降は、コンポーネント側では、`<slot name = "XXX">`で�
 
 スコープ付きslotを利用するには、子コンポーネント側では、<slot>タグに対してv-bindを行います。
 
-![scope_slotChildren](./scope_slotChildren.png)
+
+```vue
+<template>
+   <div class="home">
+     <MyCom>
+       {{ userNm.jpName }}
+     </MyCom>
+   </div>
+ </template>
+ <script>
+ import MyCom from '../components/MyCom.vue'
+ export default {
+   components: {
+     MyCom
+   }
+ }
+ </script>
+```
+```vue
+<template>
+   <div class="mycom">
+     <p>name:<slot :userNm="userNm">{{ useNm.enName }}</slot></p>
+   </div>
+ </template>
+ <script>
+ export default {
+   name: 'MyCom',
+   data () {
+     return {
+       userNm: {
+         enName: 'Mirai Taro',
+         jpName: '未来太郎' // ←slot内で参照したいデータ
+       }
+     }
+   }
+ }
+ </script>
+```
 
 親側では<v-slot:default>で受け取ることで、子コンポーネントのjpNameの値をとることができます。<v-slot:default="slotProps">のslotPropsは任意ですので重複がなければ、どんな文字列でも構いません。（公式ドキュメントに合わせました。）
 
-![scope_slotParent](./scope_slotParent.png)
 
 なお、名前付きslotを併用する場合、defaultの部分はそれぞれのslotの名前となります。
 slotに名前が設定されていない時のデフォルトの名前がdefaultになるということです。
