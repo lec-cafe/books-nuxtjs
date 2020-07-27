@@ -107,4 +107,7 @@ export default {
 titleTemplateが表示されなくなる
 
 ## Head要素のブラウザでの確認方法
+head要素の確認については、該当のブラウザ上で右クリックをして「ソースを表示」を押すと以下のような画面になり`title`を確認できます。  
+
+![head_confirmation](./head_confirmation.png)
 
