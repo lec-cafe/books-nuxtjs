@@ -59,5 +59,52 @@ export default {
 コンポーネントのデータは head() メソッド内で this を使って利用できます。ページのデータを使って独自のメタタグを設定することもできます。[公式ドキュメント](https://ja.nuxtjs.org/faq/)  
 
 ## titleTemplateについて
+titleTemplateを使いnuxt.config.jsのheadを編集すれば、動的にtitleの内容を変更することが可能になります。  
+EX)nuxt.config.js
+```vue
+head: {
+    //title: process.env.npm_package_name || '',
+    titleTemplate:  'サイト名 example | %s',
+```
+pages/title.vue
+```vue
+<template>
+  <div>
+    <p>title test</p>
+  </div>
+</template>
+ 
+<script>
+export default {
+  head() {
+    return {
+      // nuxt.config.jsの%sに反映される内容
+      title: 'タイトルタグのテストページ'
+    }
+  }
+}
+</script>
+```
+表示結果  
+`<title>サイト名 example | タイトルタグのテストページ</title>`  
+ブラウザから http://プライベートIP:3000/title にアクセスして、titleタグを確認すると「サイト名 example」＋ 「コード内で指定したtitle:の文字列(今回なら「タイトルタグのテストページ」)が表示されます。
+  
+また、titleTemplateが必要でないページの場合は、下記のようにコード内でtitleTemplateを上書きしてやれば表示されなくなります。
+```vue
+<script>
+export default {
+  head() {
+    return {
+      title: 'タイトルタグのテストページ',
+      titleTemplate: ''
+    }
+  }
+}
+</script>
+```
+表示結果  
+`<title>タイトルタグのテストページ</title>`
+titleTemplateが表示されなくなる
 
 ## Head要素のブラウザでの確認方法
+
