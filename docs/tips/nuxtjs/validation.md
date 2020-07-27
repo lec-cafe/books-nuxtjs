@@ -80,8 +80,22 @@ export default {
 
 ## カスタムルールの実装
 TODO date にカスタムルールを入れる
-カスタムルールとはjavascriptを使い自分で
-
+カスタムルールとはjavascriptを使い自分でルールを追加できるものです。
+以下の使用例が簡単なものです。
+```vue
+<script>
+import { helpers } from 'vuelidate/lib/validators'
+const mustBeCool = (value) => !helpers.req(value) || value.indexOf('cool') >= 0
+// ...
+validations: {
+  myField: {
+    mustBeCool
+  }
+}
+</script>
+```
+上記は`req(value)`がないと入力が「オプション」とみなされてる場合があります。つまり、バリデーションが適切に動いてくれなくなる時があります。  
+なので単純なバージョンであるヘルパーが存在します。  
 
 ## バリデーションルールの分離
 TODO service/validations.js を作成してルールを分離する。
