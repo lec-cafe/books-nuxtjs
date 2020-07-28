@@ -58,8 +58,8 @@ ex. messages コレクションに対する書き込みを許可し、読み込�
 service cloud.firestore {
   match /databases/{database}/documents {
     match /messages/{messageId} {
-      allow read: false;
-      allow write: true;
+      allow read: if false;
+      allow write: if true;
     }
   }
 }
