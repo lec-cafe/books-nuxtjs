@@ -79,23 +79,91 @@ export default {
 
 
 ## カスタムルールの実装
-TODO date にカスタムルールを入れる
-カスタムルールとはjavascriptを使い自分でルールを追加できるものです。
+カスタムルールとは独自でバリデーションルールを追加できるものです。
 以下の使用例が簡単なものです。
 ```vue
 <script>
-import { helpers } from 'vuelidate/lib/validators'
-const mustBeCool = (value) => !helpers.req(value) || value.indexOf('cool') >= 0
-// ...
-validations: {
-  myField: {
-    mustBeCool
-  }
+const isPostal = value => {
+  return /^[0-9]{3}-?[0-9]{4}/.test(value)
 }
 </script>
 ```
-上記は`req(value)`がないと入力が「オプション」とみなされてる場合があります。つまり、バリデーションが適切に動いてくれなくなる時があります。  
-なので単純なバージョンであるヘルパーが存在します。  
+上記のように関数名を「isPostal」としてアロー構文(function構文でも可)で自分が作成したい独自のバリデーションを作成することが出来ます。  
+今回だと郵便番号のバリデーションです  
 
 ## バリデーションルールの分離
-TODO service/validations.js を作成してルールを分離する。
+また、バリデーションをファイルで作成してimportで必要なページに読み込んで使用することも可能です。
+service/validations.js を作成して必要なバリデーションファイルを作成していきます。
+  
+例えばログインページにバリデーションをかけたいとします。以下の様に別ファイルで使用したいバリデーションを記述します
+`service/validations.js/password.js`
+```vue
+<script>
+import { required, minLength, maxLength} from 'vuelidate/lib/validators' 
+
+export const onlyAlphanumeric = (value) => {
+    return /^[0-9a-zA-Z]*$/.test(value)
+}
+
+export const withNumeric = (value) => {
+    return /[a-z]+/.test(value)
+}
+export const withAlpha = (value) => {
+    return /[0-9]+/.test(value)
+}
+
+export default {
+    password: {
+        required,
+        minLength: minLength(8),
+        maxLength: maxLength(30),
+        onlyAlphanumeric,
+        withNumeric,
+        withAlpha,
+    }
+}
+</script>
+``` 
+このファイルを呼び出したファイルは定義されている「required」「minLength」...etcが使用できる様になります。
+`pages/login.vue`
+```vue
+<template>
+  <form>
+    <div>
+      <input id="changePassword" v-model="$v.password.$model" type="text">
+    </div>
+    <div>
+      <p v-if="!$v.password.required && $v.password.$dirty">
+        入力してください。
+      </p>
+      <p v-if="!$v.password.minLength && $v.password.$dirty">
+        8文字以上で入力してください。
+      </p>
+      <p v-if="!$v.password.maxLength && $v.password.$dirty">
+        30文字以内で入力してください
+      </p>
+      <p v-if="$v.password.onlyAlphanumeric && $v.password.$dirty">
+        半角英数字のみで入力してください。
+      </p>
+    </div>
+  </form>
+</template>
+<script>
+  import validations from '@/service/validation/password'
+
+  export default {
+    data() {
+      return {
+        password: ''
+      }
+    },
+    validations
+  }
+</script>
+```
+importでバリデーション設定を読み込んで`required`や`minLength`を呼び出し元で定義しているから使用できています。
+$dirtyは`入力がされていない時`にエラーメッセージを表示させない為に書いてあります。
+$model: 検証するもとのモデルへの参照。Vueモデルを直に参照したときと同じ値が得られます。  
+つまり、this.$v.value.$modelとthis.valueは同じ値になるということです。
+
+一つのファイルにバリデーションを含めて書くとコード量が増えますが、このように別のファイルで定義していると可読性が向上します。
