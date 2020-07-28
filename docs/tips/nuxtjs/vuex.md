@@ -7,18 +7,14 @@ Nuxt.js ではデフォルトで Vuex の利用準備が整っているため、
 ## Vuex Store モジュールの作成
 今回、タスクのデータを利用するため、 `store/tasks.js` ファイルを作成して、Vuex Store モジュールとして展開します。
 `state` は Vuex Store モジュール内で管理するオブジェクトの定義です。 ここでは、タスクデータとして items を配列で定義しています。  
-EX) stateの定義
 ```vue
-const store = new Vuex.Store({
-  // ステートを定義する
-  state: {
-    login: false
+export const state = () => {
+  return {
+    items: []
   }
-})
-
-console.log(store.state.login) // falseが表示されます
+}
 ```
-ステートを定義するには、上記のようにストアの生成時にstateオプションを指定して、その中に管理したい情報を定義します。今回の場合は、loginという情報を定義しました。
+ステートを定義するには、上記のようにストアの生成時にstateオプションを指定して、その中に管理したい情報を定義します。
 
 mutations は state に対する操作パターンの定義です。 投稿画面からデータを追加する際に利用する ADD_TASK と firebase から一覧データを取得した際に利用する LOAD_TASKSを定義しています。  
 また、VuexのStateを変更する唯一の方法はMutationをコミットすることです。
@@ -26,21 +22,25 @@ EX
 ```vue
 const store = new Vuex.Store({
   state: {
-    count: 1
+    items: []
   },
   mutations: {
-    increment (state) {
-      // 状態を変更する
-      state.count++
-    }
+    ADD_TASK (state, task) {
+      // データを追加
+      state.items.push(task)
+    },
+    LOAD_TASK (state, tasks) {
+      state.items=tasks
+     }
   }
 })
 ```
 Mutationはイベントに近い概念を持っており`タイプ`と`ハンドラ`を持ちます。  
-例えば上記のコードではincrementがタイプで、メソッド部分を含めるとハンドラになります。
-Mutationは直接呼び出すことはできず下記のようにミューテーションタイプを指定しコミットすることになります。
+例えば上記のコードではincrementがタイプで、メソッド部分を含めるとハンドラになります。  
+
+Mutationは直接呼び出すことはできず下記のようにコミットすることで呼び出すことが出来ます。
 ```vue
-store.commit('increment')
+store.commit('ADD_TASK', task)
 ```
 actions は実際にアプリケーション内部で利用する、 Vuex Store モジュールへのデータ操作関数の定義です。
 プラグイン経由でinject した $fb は Vuex Store モジュール内でも参照できるので、 ここで $fb を用いて firebase へのアクセスを行なっています。  
@@ -50,19 +50,30 @@ actions は実際にアプリケーション内部で利用する、 Vuex Store 
 - アクションは任意の非同期処理を含むことができます。
 ```vue
 const store = new Vuex.Store({
-  state: {
-    count: 0
-  },
-  mutations: {
-    increment (state) {
-      state.count++
-    }
-  },
-  actions: {
-    increment (context) {
-      context.commit('increment')
-    }
-  }
+    state: {
+      items: []
+    },
+    mutations: {
+      ADD_TASK (state, task) {
+        // データを追加
+        state.items.push(task)
+      }, 
+      LOAD_TASK (state, tasks) {
+          state.items=tasks
+         }
+      },
+    actions: {
+      Add() {
+          this.$fb.firestore().collection('tasks').add(task)
+          context.dispatch('Load')
+        }
+        async Load() {
+          const tasks =[]
+          const result = await this.$fb.firestore().collection('tasks').orderBy('date','desc').get()
+          tasks = result.docs.map(d=>d.data())
+          context.commit('LOAD_TASK',tasks)
+     }
+   }
 })
 ```
 アクションハンドラはストアインスタンスのメソッドやプロパティのセットと同じものを呼び出せるコンテキストオブジェクトを受け取ります。  
