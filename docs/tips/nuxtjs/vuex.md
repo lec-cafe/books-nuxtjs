@@ -48,7 +48,25 @@ actions は実際にアプリケーション内部で利用する、 Vuex Store 
 アクションはミューテーションと似ていますが、下記の点で異なります:  
 - アクションは、状態を変更するのではなく、ミューテーションをコミットします。
 - アクションは任意の非同期処理を含むことができます。
-
+```vue
+const store = new Vuex.Store({
+  state: {
+    count: 0
+  },
+  mutations: {
+    increment (state) {
+      state.count++
+    }
+  },
+  actions: {
+    increment (context) {
+      context.commit('increment')
+    }
+  }
+})
+```
+アクションハンドラはストアインスタンスのメソッドやプロパティのセットと同じものを呼び出せるコンテキストオブジェクトを受け取ります。  
+したがって context.commit を呼び出すことでミューテーションをコミットできます。
 
 ## vue ファイルからの Vuex の利用
 vue ファイルから Vuex を参照する、一番簡単な手法は $store を利用する方法です。
@@ -64,7 +82,7 @@ export const state = () => {
 .vueファイル
 ```vue
 <template>
-  <div id="app">
+  <div>
     <h1>{{ $store.state.message }}</h1>
   </div>
 </template>
@@ -76,54 +94,33 @@ export const state = () => {
 
 ## mapper の活用
 $storeを利用せずとも、Vuex で提供されている mapper を利用して、 シンプルに Vuex の参照を行うことも可能です。
-store/hoge.jsで定義しているものを.vueファイルでimport、computedで「...hogemapper」と書くことでjsで保存されている状態をコピーして.vueファイルで使用出来るようにしています。
+以下の例を見てみましょう。
 store/test.js
 ```vue
-SET_TEST(state,test){
-      state.school_key = school.school_key
-      state.school = new School({
-        key: school.school_key,
-        name: school.name,
-        tests: school.tours.map((sample)=>{
-          return  new Test({
-            key: test.test_key,
-            code: sampel.code,
-            name: test.test_title,
-          })
-        }),
-SET_TODO(state,todo){
-  
-}
+import { createNamespacedHelpers } from 'vuex'
+
+export const testMapper = createNamespacedHelpers('test')
+export const state = () => ({
+  messgae: "Hello Veux"
+})
 ```
 .vueファイル
 ```vue
+<template>
+  <div>
+    <h1>{{ message }}</h1>
+  </div>
+</template>
 <script>
   import testMapper from '@/store/test.js'
 
   export default {
-    head() {
-      return {
-        title: 'タイムライン ｜ JTB-EDIC'
-      }
-    },
-    data() {
-      return {
-        unread: null
-      }
-    },
     computed: {
-      ...testMapper.mapGetters(['sample']),
+      ...testMapper.mapState({ message: 'message' })
+
    },
-    async mounted(){
-      await this.$_auth.user()
-      const response = await new TimelineUsecase(this.$axios).getUnread(this.tour.key)
-      this.unread = response.unread
-    },
-    methods: {
-      hasUnreadTimeline(class_key) {
-        return (class_key && this.unread && this.unread[class_key])
-      }
-    }
   }
 </script>
 ```
+store/hoge.jsで定義しているものを.vueファイルでimport、computedで「...hogemapper」と書くことでstateの値を呼び出して.vueファイルで使用出来るようにしています。  
+今回だとtest.jsのstateで定義している「message」を呼び出しています。
