@@ -55,22 +55,11 @@ vue ファイルから Vuex を参照する、一番簡単な手法は $store �
 以下の例を見ていきましょう。
 store/index.js
 ```vue
-import Vue from 'vue'
-import Vuex from 'vuex'
-
-Vue.use(Vuex)
-
-export default new Vuex.Store({
-  state: {
-  	message: 'Hello Vuex'
-  },
-  mutations: {
-  },
-  actions: {
+export const state = () => {
+  return {
+    message: "Hello Vuex"
   }
-  modules: {
-  }
-})
+}
 ```
 .vueファイル
 ```vue
@@ -86,4 +75,55 @@ export default new Vuex.Store({
 上記の例は、$store.state.messageと少し長いですが、$storeという大きな入れ物の中にさらにstateという入れ物があり、その中にmessageが入っているイメージを持つことができます。
 
 ## mapper の活用
-$store 利用せずとも、Vuex で提供されている mapper を利用して、 シンプルに Vuex の参照を行うことも可能です。Vuex の利用
+$storeを利用せずとも、Vuex で提供されている mapper を利用して、 シンプルに Vuex の参照を行うことも可能です。
+store/hoge.jsで定義しているものを.vueファイルでimport、computedで「...hogemapper」と書くことでjsで保存されている状態をコピーして.vueファイルで使用出来るようにしています。
+store/test.js
+```vue
+SET_TEST(state,test){
+      state.school_key = school.school_key
+      state.school = new School({
+        key: school.school_key,
+        name: school.name,
+        tests: school.tours.map((sample)=>{
+          return  new Test({
+            key: test.test_key,
+            code: sampel.code,
+            name: test.test_title,
+          })
+        }),
+SET_TODO(state,todo){
+  
+}
+```
+.vueファイル
+```vue
+<script>
+  import testMapper from '@/store/test.js'
+
+  export default {
+    head() {
+      return {
+        title: 'タイムライン ｜ JTB-EDIC'
+      }
+    },
+    data() {
+      return {
+        unread: null
+      }
+    },
+    computed: {
+      ...testMapper.mapGetters(['sample']),
+   },
+    async mounted(){
+      await this.$_auth.user()
+      const response = await new TimelineUsecase(this.$axios).getUnread(this.tour.key)
+      this.unread = response.unread
+    },
+    methods: {
+      hasUnreadTimeline(class_key) {
+        return (class_key && this.unread && this.unread[class_key])
+      }
+    }
+  }
+</script>
+```
