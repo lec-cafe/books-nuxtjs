@@ -7,68 +7,43 @@ npm install marked
 ```
 [公式ドキュメント](https://www.npmjs.com/package/marked)
 
-## vue.jsでmdファイルを読み込めるようにする
-npmで markdown-to-vue-loader、vue-loader をインストール
+## yamlファイルを使ってmarkdown
+
+まず`documents/data/test.yaml`を作成します。
 ```vue
-$ npm install markdown-to-vue-loader vue-loader webpack --save-dev
+test:
+  title: ## これがタイトル
+  text: ### これが文章
 ```
-次にwebpackの設定を変更します
-webpack.conf.js
-```vue
-module: {
-  rules: [
-    {
-      test: /\.md$/,
-      exclude: /(node_modules|bower_components)/,
-      use: [
-        'vue-loader',
-        {
-          loader: 'markdown-to-vue-loader',
-          options: {
-              exportSource: true    // この設定でMarkdownのRawデータを読み込めるようにする
-          },
-        },
-      ],
-    },
-  ],
-}
-```
-そしてassetsフォルダにmarkdown.mdファイルを作成します。中身はなんでも良いのでmarkdownの記法で書いておいてください
-src/assets/markdown.md
-```vue
-## test
-- test
-[test]("#")
-```
-次に.vueファイルを作成します(今回はmarkdown.vueというファイルで作成します)  
-markdown.vue
+そして次に`npm run doc`で static/api/test.json を作成します。  
+作成したjsonファイルを読み込む記述を.vueファイルに記述します。  
+pages/index.vue
 ```vue
 <template>
-  <div class="markdown">
-    <div v-html="compiledMarkdownText" />
+  <div v-if="test" :test="test">
+    <div>
+      {{ test.title }}
+    </div>
+    <p>
+      {{ test.text }}
+    </p>
   </div>
 </template>
 
 <script>
-import marked from 'marked'
-import md from '../assets/markdown.md'
-
+import { test,} from '@/static/api/test.json'
 export default {
-  name: 'Markdown',
-  data () {
+  data() {
     return {
-      markdownText: md.source    // sourceで Rawデータが取得できます 
+      test: null,
     }
   },
-  computed: {
-    compiledMarkdownText: function () {
-      return marked(this.markdownText) 
-    }
-  }
+  async mounted() {
+    this.test = test
+  },
 }
 </script>
-
-<style scoped>
-</style>
 ```
-この状態で確認したら、問題なくmarkdownでの表示がされているはずです。
+こうするとjson化されている`title`と`text`がmarkdownの形式で表示されます。  
+まず、.vueファイルではjsonファイルをimportして、その値をmountedでvueのdataと結び付けてい  
+v-ifをdivにつけているのはjsonのデータが読み込まれる前に`title`や`text`を読み込まない為です。
