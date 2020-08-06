@@ -1,13 +1,17 @@
-# TODO Jest のセットアップ資料揃える
----
-# jest 
+# jestの設定
+
+## jestの導入
+
+jestとはjavascriptのユニットテストのためのツールです。
+Babel,TypeScript,Node,Vueなど、様々なフレームワークを利用したプロジェクトで動作させる事が出来ます。
+
+以下のモジュールインストールを行うとjestの環境構築が出来上がります。
 
 ```bash
 $ npm i jest @types/jest ts-jest vue-jest -D
-
 ```
 
-`jest.config.js```
+jestの設定は```jest.config.js```に記述します。
 
 ```bash
 module.exports = {
@@ -19,7 +23,7 @@ module.exports = {
   },
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/$1",
-    "^~/(.*)$": "<rootDir>/$1"
+    "^~/(.*)$": "<rootDir>/$1"/tes
   },
   globals: {
     "ts-jest": {
@@ -31,14 +35,13 @@ module.exports = {
 }
 ```
 
-js を使うために
+最新のJavaScriptを使うために、以下のモジュールをインストールしましょう。
 
 ```bash
 npm i @babel/plugin-proposal-object-rest-spread @babel/plugin-transform-runtime babel-preset-env -D
 ```
 
-bashrc を置く
-
+babelの設定は```.babelrc```に記述します。
 ```
 {
   "comments": false,
@@ -51,4 +54,17 @@ bashrc を置く
   ]
 }
 ```
+
+次にテストを実行するためのコマンドを```package.json```に追加しましょう。
+
+```
+{
+  "scripts": {
+    ...
+    "test": "jest
+  }
+}
+```
+
+
 
