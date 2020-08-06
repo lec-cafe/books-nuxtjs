@@ -5,7 +5,7 @@
 jestとはjavascriptのユニットテストのためのツールです。
 Babel,TypeScript,Node,Vueなど、様々なフレームワークを利用したプロジェクトで動作させる事が出来ます。
 
-以下のモジュールインストールを行うとjestの環境構築が出来上がります。
+まずは以下のモジュールをインストールしてjestのテスト環境を構築しましょう。
 
 ```bash
 $ npm i jest @types/jest ts-jest vue-jest -D
@@ -66,5 +66,56 @@ babelの設定は```.babelrc```に記述します。
 }
 ```
 
+## コンポーネントのテスト
 
+例としてpropsにtitleを渡して、そのまま表示するシンプルなコンポーネントがあるとします。
+
+```vue
+<!-->#Title.vue<-->
+<template>
+  <h1>
+    {{ title }}
+  </h1>
+</template>
+
+<script>
+export default {
+  props: {
+    title: {
+      type: String,
+      required: true
+    }
+  }
+}
+</script>
+```
+
+このコンポーネントのテストコードを書いていきましょう。
+propsとして渡した値が実際に表示されているかをテストしています。
+
+```js
+import { mount } from '@vue/test-utils'
+import Heading from "~/components/Title"
+
+describe("タイトルコンポーネントのテスト",()=>{
+  test("タイトルがが表示されているか", ()=>{
+    const props = {
+      title: "タイトルです"
+    }
+    const wrapper = mount(Title, {
+      propsData: props
+    })
+    //propsに指定したタイトルが表示されているか確認。
+    expect(wrapper.props('title')).toBe(props.text)
+  })
+})
+```
+
+テストが上手くいったか確認するために以下のコマンドを実行しましょう。
+
+```bash
+$ npm run test
+```
+
+テストの結果が表示され無事にタイトルが表示されている事が確認できると思います。
 
