@@ -38,3 +38,17 @@ npm i @babel/plugin-proposal-object-rest-spread @babel/plugin-transform-runtime 
 ```
 
 bashrc を置く
+
+```
+{
+  "comments": false,
+  "presets": [
+    [ "@babel/preset-env", {
+      "targets": {
+        "node" : "12"
+      }
+    }]
+  ]
+}
+```
+
