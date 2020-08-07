@@ -1,7 +1,7 @@
 # functions の活用
 
-firebaseで提供されているサービスの一つにCloud Function for Firebaseがありあmす。
-こちらはFirebaseのイベントを受け取ってサーバー側で処理を実行できるサービスとなっています。
+firebaseで提供されているサービスの一つにCloud Function for Firebaseがあります。
+こちらはFirebaseなどのイベントを受け取ってサーバー側で処理を実行できるサービスとなっています。
 
 クライアント側にロジックを持たせてしまうと問題になるような処理をcloud functionで実行することで、
 安全にデータの処理などを実行する事が出来ます。
