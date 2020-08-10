@@ -1,13 +1,17 @@
-# TODO Jest のセットアップ資料揃える
----
-# jest 
+# jestの設定
+
+## jestの導入
+
+jestとはjavascriptのユニットテストのためのツールです。
+Babel,TypeScript,Node,Vueなど、様々なフレームワークを利用したプロジェクトで動作させる事が出来ます。
+
+まずは以下のモジュールをインストールしてjestのテスト環境を構築しましょう。
 
 ```bash
 $ npm i jest @types/jest ts-jest vue-jest -D
-
 ```
 
-`jest.config.js```
+jestの設定は```jest.config.js```に記述します。
 
 ```bash
 module.exports = {
@@ -19,7 +23,7 @@ module.exports = {
   },
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/$1",
-    "^~/(.*)$": "<rootDir>/$1"
+    "^~/(.*)$": "<rootDir>/$1"/tes
   },
   globals: {
     "ts-jest": {
@@ -31,14 +35,13 @@ module.exports = {
 }
 ```
 
-js を使うために
+最新のJavaScriptを使うために、以下のモジュールをインストールしましょう。
 
 ```bash
 npm i @babel/plugin-proposal-object-rest-spread @babel/plugin-transform-runtime babel-preset-env -D
 ```
 
-bashrc を置く
-
+babelの設定は```.babelrc```に記述します。
 ```
 {
   "comments": false,
@@ -51,4 +54,68 @@ bashrc を置く
   ]
 }
 ```
+
+次にテストを実行するためのコマンドを```package.json```に追加しましょう。
+
+```
+{
+  "scripts": {
+    ...
+    "test": "jest
+  }
+}
+```
+
+## コンポーネントのテスト
+
+例としてpropsにtitleを渡して、そのまま表示するシンプルなコンポーネントがあるとします。
+
+```vue
+<!-->#Title.vue<-->
+<template>
+  <h1>
+    {{ title }}
+  </h1>
+</template>
+
+<script>
+export default {
+  props: {
+    title: {
+      type: String,
+      required: true
+    }
+  }
+}
+</script>
+```
+
+このコンポーネントのテストコードを書いていきましょう。
+propsとして渡した値が実際に表示されているかをテストしています。
+
+```js
+import { mount } from '@vue/test-utils'
+import Heading from "~/components/Title"
+
+describe("タイトルコンポーネントのテスト",()=>{
+  test("タイトルがが表示されているか", ()=>{
+    const props = {
+      title: "タイトルです"
+    }
+    const wrapper = mount(Title, {
+      propsData: props
+    })
+    //propsに指定したタイトルが表示されているか確認。
+    expect(wrapper.props('title')).toBe(props.text)
+  })
+})
+```
+
+テストが上手くいったか確認するために以下のコマンドを実行しましょう。
+
+```bash
+$ npm run test
+```
+
+テストの結果が表示され無事にタイトルが表示されている事が確認できると思います。
 
