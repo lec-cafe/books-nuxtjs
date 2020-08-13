@@ -7,6 +7,7 @@ module.exports = {
             children: [
                 "website/",
                 "todolist/",
+                "chatapp/",
             ]
         },
         "/tips/nuxtjs/",
