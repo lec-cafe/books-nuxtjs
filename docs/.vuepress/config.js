@@ -50,6 +50,7 @@ module.exports = {
     ],
     sidebar: {
       ...require('../lessons/todolist/sidebar'),
+      ...require('../lessons/chatapp/sidebar'),
       "/lessons/website/": [
         {
           title: 'Nuxt.js を利用したWebサイト制作',
