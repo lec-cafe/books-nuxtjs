@@ -12,15 +12,13 @@ module.exports = {
                 '1-5.firestore',
             ]
         },
-        // {
-        //     title: 'Extra',
-        //     collapsable: false,
-        //     children: [
-        //         '2-2.validation',
-        //         '2-3.vuex',
-        //         '2-4.realtime',
-        //     ]
-        // },
+        {
+            title: 'Extra',
+            collapsable: false,
+            children: [
+                '2-1.rules',
+            ]
+        },
         "/lessons/",
         "/tips/nuxtjs/",
         "/tips/firebase/"
