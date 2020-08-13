@@ -5,6 +5,7 @@ module.exports = {
       collapsable: false,
       path: "/tips/firebase/",
       children: [
+        "auth_providers",
         "firestore_write",
         "firestore_read",
         "firestore_delete",
