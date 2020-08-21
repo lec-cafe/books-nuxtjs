@@ -52,6 +52,8 @@ export default {
 }
 ```
 
+`@types/vue-shim.d.ts`
+
 ```ts
 declare module "*.vue" {
   import Vue from 'vue'
