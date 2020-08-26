@@ -8,10 +8,12 @@ module.exports = {
                 "website/",
                 "todolist/",
                 "chatapp/",
+                "typescript/",
             ]
         },
         "/tips/nuxtjs/",
         "/tips/vuejs/",
         "/tips/firebase/",
+        "/tips/typescript/",
     ],
 }

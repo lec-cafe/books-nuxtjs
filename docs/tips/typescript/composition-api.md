@@ -5,32 +5,21 @@ Vue Component を作成する方法を確認していきましょう。
 
 ## Setup
 
-Vue2 系においても、`@vue/composition-api` をインストールして簡単に Composition APIを体験することができます。
+Nuxt.js で Composition API を利用する場合、
+`@nuxtjs/composition-api` のモジュールを利用するのが便利です。
 
 ```bash
-$ npm i @vue/composition-api
+$ npm i @nuxtjs/composition-api
 ```
 
-`@vue/composition-api` は Vue.js のプラグインとして提供されているため、 
-`Vue.use` を実行して、Vue.js に組み込む必要があります。
-
-```js
-import Vue from 'vue'
-import VueCompositionApi from '@vue/composition-api'
-
-Vue.use(VueCompositionApi)
-```
-
-Nuxt.js で利用する場合には、上記のコードを、
-`plugins/composition-api.js` などに作成して、
-`nuxt.config.js` にプラグインの読み込みを追記しておきましょう。
+`nuxt.config.js` にモジュールの読み込みを追記しておきましょう。
 
 ```js
 export default {
-  plugins: [
+  buildModules: [
     // ...
-    "~/plugins/compositionapi.js"
-  ],
+    '@nuxtjs/composition-api'
+  ]
 }
 ```
 
@@ -166,6 +155,38 @@ export default defineComponent({
 
 ```
 
+### Props
+
+Props は setup の引数から値を受け取ることができます。
+
+emit は以下のような形で、第２引数からemitを取得して利用します。
+
+```vue
+<script >
+import { defineComponent } from "@vue/composition-api";
+
+export default defineComponent({
+  props: {
+    message: {
+      type: String,
+      default: "default Value"
+    }
+  },
+  setup(props, context) {
+    const message = props.message
+    const upperCaseMessage = () => {
+      context.emit("change-message");
+    };
+    return {
+      message, // this is not reactive  
+      upperCaseMessage
+    };
+  }
+})
+</script>
+```
+
+
 ### computed
 
 ```ts
@@ -199,36 +220,40 @@ export default defineComponent({
 })
 ```
 
-### Props
+## layout
 
-Props は setup の引数から値を受け取ることができます。
+layout などの Nuxt.js 固有の値は、
+通常通りオブジェクトにキーをはやして値を定義できます。
 
-emit は以下のような形で、第２引数からemitを取得して利用します。
+## computed
 
-```vue
-<script >
-import { defineComponent } from "@vue/composition-api";
+```ts
+import { defineComponent, computed, reactive } from '@vue/composition-api'
 
 export default defineComponent({
-  props: {
-    message: {
-      type: String,
-      default: "default Value"
-    }
-  },
-  setup(props, context) {
-    const message = props.message
-    const upperCaseMessage = () => {
-      context.emit("change-message");
-    };
-    return {
-      message, // this is not reactive  
-      upperCaseMessage
-    };
+  layout: "guest",
+  setup () {
+    // ...
   }
 })
-</script>
 ```
+
+## this の利用
+
+`$axios` や `$v` など プラグイン等から this 経由で渡される値を利用したいときには、
+第２引数から this 相当の root オブジェクトを取得します。
+
+```ts
+import {defineComponent, onMounted, reactive, SetupContext} from '@nuxtjs/composition-api'
+
+export default defineComponent({
+setup(props:null,ctx: SetupContext) {
+  const $v = ctx.root.$v;
+  // ...
+},
+})
+```
+
 
 ## Composition API の目的
 
@@ -239,3 +264,14 @@ this の依存がなくなり、また vue コンポーネントのデータ構�
 機能ごとに実装された複数の関数を複合(composite)的に活用してコンポーネントの定義を行うことができるようになります。
 
 また、thisが亡くなることで、TypeScript による型サポートの相性の幅もより広くなる効果も期待されています。
+
+## Document
+
+Composition API の記法に関する詳細は、以下のドキュメントが参考になります。
+
+https://composition-api.vuejs.org/
+
+@nuxtjs/composition-api 固有の表現に関しては以下のドキュメントが参考になります。
+
+https://composition-api.nuxtjs.org/
+
