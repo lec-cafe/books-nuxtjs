@@ -2,9 +2,13 @@
 
 https://typescript.nuxtjs.org/ja/guide/setup.html
 
+必要なモジュールは以下でインストールします。
+
 ```bash
 $ npm install --save-dev @nuxt/typescript-build @nuxt/types
 ```
+
+インストールしたモジュールは以下の形で、 `nuxt.config.js` に登録しましょう。
 
 ```js
 // nuxt.config.js
@@ -14,6 +18,8 @@ export default {
   ]
 }
 ```
+
+次に、`tsconfig.json` を作成して、以下の内容を記述します。
 
 ```json
 // tsconfig.json
@@ -52,7 +58,7 @@ export default {
 }
 ```
 
-`@types/vue-shim.d.ts`
+最後に、`@types/vue-shim.d.ts` を作成して以下のように定義します。
 
 ```ts
 declare module "*.vue" {

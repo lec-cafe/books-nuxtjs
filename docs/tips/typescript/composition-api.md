@@ -25,6 +25,15 @@ Nuxt.js で利用する場合には、上記のコードを、
 `plugins/composition-api.js` などに作成して、
 `nuxt.config.js` にプラグインの読み込みを追記しておきましょう。
 
+```js
+export default {
+  plugins: [
+    // ...
+    "~/plugins/compositionapi.js"
+  ],
+}
+```
+
 ## Component の記述
 
 Composition APIを利用した Component の記述は以下のような形になります。
