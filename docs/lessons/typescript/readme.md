@@ -3,11 +3,14 @@
 
 typescriptのセットアップ
 typescriptモジュールの作成と利用
+
+普通にts.vue かけるか確認
 composition apiの利用
 
 
 
-
+GitHub リポジトリを削除するような
+簡単なアプリケーションを作成してトライする
 
 
 jestを用いたテスト

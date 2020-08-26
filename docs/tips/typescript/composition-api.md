@@ -5,28 +5,29 @@ Vue Component を作成する方法を確認していきましょう。
 
 ## Setup
 
-プラグインを利用して簡単に
+Vue2 系においても、`@vue/composition-api` をインストールして簡単に Composition APIを体験することができます。
 
 ```bash
 $ npm i @vue/composition-api
 ```
 
-Nuxt.js で利用する場合には plugins を作成して、
-`Vue.use` を実行する必要があります。
+`@vue/composition-api` は Vue.js のプラグインとして提供されているため、 
+`Vue.use` を実行して、Vue.js に組み込む必要があります。
 
 ```js
-// plugins/composition-api.js
 import Vue from 'vue'
 import VueCompositionApi from '@vue/composition-api'
 
 Vue.use(VueCompositionApi)
 ```
 
-`nuxt.config.js` にプラグインの読み込みを追記して起きましょう。
+Nuxt.js で利用する場合には、上記のコードを、
+`plugins/composition-api.js` などに作成して、
+`nuxt.config.js` にプラグインの読み込みを追記しておきましょう。
 
 ## Component の記述
 
-Component の記述は以下のような形になります。
+Composition APIを利用した Component の記述は以下のような形になります。
 
 data や methods などで定義していた変数や関数は、
 setup 関数の内部で返り値として定義することができます。
@@ -175,6 +176,7 @@ export default defineComponent({
   },
 
   setup ({ user }) {
+    
     const fullName = computed(() => `${user.firstName} ${user.lastName}`)
     const state = reactive({
         message: "hello world"
@@ -218,3 +220,13 @@ export default defineComponent({
 })
 </script>
 ```
+
+## Composition API の目的
+
+Composition APIでは、これまで vue コンポーネントで頻繁に利用されていた、`this` を利用する場面がなくなり、
+コンポーネント内から暗黙の依存が除去されるようになります。
+
+this の依存がなくなり、また vue コンポーネントのデータ構造のルールも無くなることにより、
+機能ごとに実装された複数の関数を複合(composite)的に活用してコンポーネントの定義を行うことができるようになります。
+
+また、thisが亡くなることで、TypeScript による型サポートの相性の幅もより広くなる効果も期待されています。
