@@ -35,6 +35,20 @@ module.exports = {
 }
 ```
 
+tsconfig.json の `compilerOptions.types` に `@types/jest` を追加してください。
+
+```json
+{
+  "compilerOptions": {
+    "types": [
+      "@types/node",
+      "@nuxt/types",
+      "@nuxt/jest"
+    ]
+  }
+}
+```
+
 最後にテストを実行するためのコマンドを `package.json`に追加しましょう。
 
 ```
