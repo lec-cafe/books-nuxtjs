@@ -1,4 +1,4 @@
-# Auth with Google
+# プロバイダを利用した認証 
 
 Firebase Authentication では様々な認証プロバイダを利用して認証処理を実装することができます。
 
@@ -53,6 +53,10 @@ signInWithPopup から受け取る事ができる `result` には、
 ```js
 provider.addScope('repo');
 ```
+
+GitHub Scope に関する詳細は、以下の資料をご確認ください。
+
+https://developer.github.com/apps/building-oauth-apps/understanding-scopes-for-oauth-apps/
 
 Google ログインに関する詳細は、以下の公式資料も確認ください。
 
