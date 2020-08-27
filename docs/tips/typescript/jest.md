@@ -97,3 +97,23 @@ https://jestjs.io/docs/ja/expect
 ```bash
 $ npm run test -- test/sample.spec.js
 ```
+
+
+## Babel の設定
+
+実行時にBabel 系のエラーが表示された方は、
+以下のような形で、`.babelrc` の設置を試みてください。
+
+```
+{
+  "comments": false,
+  "presets": [
+    [ "@babel/preset-env", {
+      "targets": {
+        "node" : "12"
+      }
+    }]
+  ]
+}
+```
+
