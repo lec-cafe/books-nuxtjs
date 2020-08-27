@@ -7,6 +7,7 @@ module.exports = {
             path: "/tips/typescript/",
             children: [
               'jest',
+              'tsconfig',
               'composition-api'
             ]
         },
