@@ -43,7 +43,7 @@ tsconfig.json の `compilerOptions.types` に `@types/jest` を追加してく�
     "types": [
       "@types/node",
       "@nuxt/types",
-      "@nuxt/jest"
+      "@types/jest"
     ]
   }
 }
