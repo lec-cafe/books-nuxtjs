@@ -68,10 +68,12 @@ module.exports = {
         "/lessons/",
         "/tips/nuxtjs/",
       ],
+      ...require('../lessons/typescript/sidebar'),
       ...require('../lessons/sidebar'),
       ...require('../tips/nuxtjs/sidebar'),
       ...require('../tips/vuejs/sidebar'),
       ...require('../tips/firebase/sidebar'),
+      ...require('../tips/typescript/sidebar'),
     }
   },
 
