@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "firebase": "^7.16.1",
-    "firebase-admin": "^9.0.0",
+    "firebase-admin": "^11.4.1",
     "nuxt": "^2.13.0"
   },
   "devDependencies": {}
